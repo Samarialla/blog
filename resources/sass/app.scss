@@ -1,0 +1,172 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+
+.full-height {
+    height: 100vh;
+}
+
+.flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.position-ref {
+    position: relative;
+}
+
+.top-right {
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}
+
+.content {
+    text-align: center;
+}
+
+.title {
+    font-size: 84px;
+}
+
+.links > a {
+    color: #636b6f;
+    padding: 0 25px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.m-b-md {
+    margin-bottom: 30px;
+}
+
+#user{
+    color:black;
+    text-decoration: underline;
+    font-weight: bold;
+    float: right;
+}
+#logouser{
+   color: blue;
+   font-size: 100px;
+   box-shadow: 10px 10px 10px 8px rgb(224, 215, 215);
+   border-radius: 15px;
+}
+
+.web{
+    width: 100% !important;
+    height: 100% !important;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px 8px rgb(160, 147, 147); 
+}
+
+#root{
+    width: 99% !important;
+    height: 100% !important;
+}
+
+#welcome{
+    color:blue;
+    font-size: 30px;
+    margin: initial;
+}
+
+.principal{
+    background-color: white;
+    border-width: 1px;
+    border-style: solid;
+    //border-color: black;
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px 8px rgb(160, 147, 147); 
+    width: 101% !important;
+    height: 100% !important;
+    
+    
+}
+
+.icons{
+    margin-right: 10px !important;
+    color: black;
+    margin-left: 50px;;
+}
+
+
+body{
+    //background: url('/img/image.png');
+    //opacity: 0.1;
+    background-position: center;
+    background-repeat: no-repeat;
+    //background-size: cover;
+    background-attachment: fixed;
+
+}
+#logo{
+    width: 65px;
+    height: 65px;
+}
+
+
+.totales_grid{
+    margin-left:40% ;
+    font-size: 13px;
+}
+h1{
+    color: BLUE;
+    margin-top: 1%;
+}
+
+.texto{
+    text-align: justify;
+}
+
+.subtexto{
+    color: green;
+}
+
+label{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.validacion{
+    color: red;
+    font-size:12px;
+}
+
+.modal_agenda{
+    width: 5000px !important;
+}
+.dashboard{
+    background-color: white;
+    border-width: 1px;
+    border-style: solid;
+    //border-color: black;
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px 8px rgb(160, 147, 147);   // width: 250px;
+    margin-right: 1%;
+    font-size: 15px !important;
+    margin-left: 2%;
+    height: 100% !important;
+
+
+}
+
+.total{
+    margin-left: 65% !important;
+    color: red;
+    font-size: 27px;
+    font-weight: bold;
+}
+
