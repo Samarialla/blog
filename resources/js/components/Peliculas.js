@@ -3,20 +3,24 @@ import ReactDOM, { render } from 'react-dom';
 import Axios from 'axios';
 import Pagination from "react-js-pagination";
 import Modal from 'react-bootstrap4-modal';
+import Nav from './Nav';
 class Peliculas extends Component {
     constructor(props) {
         super(props);
         this.state = {
             peliculas: null,
             modal: false,
-           titulo: '',
+            titulo: '',
             validacion: '',
             edit: false,
             modalDelete: false,
-            search: '', 
-            limit: '', 
+            search: '',
+            limit: '',
             offset: '',
-            criticas: ''
+            criticas: '',
+            id: '',
+            comentarios: '',
+            etiquetas:''
 
         };
 
@@ -25,6 +29,7 @@ class Peliculas extends Component {
     //carga  los al renderizar el componente
     async componentDidMount() {
         await this.getdata();
+        // await this.getdataPeliculasCometarios();
     }
 
     //obtenemos los datos de uri
@@ -35,11 +40,26 @@ class Peliculas extends Component {
         const url = `/api/peliculas?limit=${this.state.limit}&offset=${this.state.offset}`;
         Axios.get(url).then(response => {
             this.setState({ peliculas: response.data })
-            console.log(this.state.peliculas)
+            //console.log(this.state.peliculas)
 
         }).catch(error => {
             alert("Error " + error)
         })
+    }
+    async getdataPeliculasCometarios() {
+        const formData = new FormData()
+        const url = `/api/comentarios?id=${this.state.id}`;
+        Axios.get(url).then(response => {
+            //this.setState({ comentarios: response.data.mensaje })
+            response.data.map((number) =>
+                this.setState({ comentarios: number.mensaje })
+            );
+
+        }).catch(error => {
+            alert("Error " + error)
+        })
+
+
     }
 
 
@@ -70,23 +90,18 @@ class Peliculas extends Component {
             this.setState(
                 {
                     modal: false,
-                    formCodigo: '',
-                    formNombre: '',
-                    formApellido: '',
-                    formTelefono: '',
-                    formCedula: '',
-                    formDireccion: '',
                     validacion: '',
                     edit: false,
-                    modalDelete: false
+                    modalDelete: false,
+                    id: ''
                 })
         }
 
-  
+
         const handleChangeLimit = (event) => {
             this.setState({ limit: event.target.value });
-            console.log(this.state.limit)
-            this.getdata();
+            //console.log(this.state.limit)
+             this.getdata();
         }
 
         /******fin de crear*********/
@@ -95,13 +110,14 @@ class Peliculas extends Component {
 
         return (
             <>
+            <Nav></Nav>
                 <div className="container">
                     <div className='row'>
                         <h1>Peliculas</h1>
                     </div>
                     <hr />
                     <div className='col-lg-2'>
-                        <select name="prov_descr" className="form-control " value={this.state.limit} onClick={handleChangeLimit}>
+                        <select name="prov_descr" className="form-control " value={this.state.limit} onChange={handleChangeLimit}>
                             <option value='10'>10</option>
                             <option value='15'>15</option>
                             <option value='50'>50</option>
@@ -118,7 +134,7 @@ class Peliculas extends Component {
                     <div className="modal-body">
                         <form className='container'>
                             <div>
-                                <label>Titulo *</label>
+                                <label>Titulo * {this.state.id}</label>
                             </div>
                             <div  >
                                 <input type='text' className='form-control' value={this.state.titulo}></input>
@@ -129,16 +145,23 @@ class Peliculas extends Component {
                                     <label>Etiqueta*</label>
                                 </div>
                                 <div>
-                                    <input type='text' className='form-control' value={this.state.criticas} required></input>
+                                    <input type='text' className='form-control' value={this.state.etiquetas} readOnly={true} required></input>
                                     <span className='validacion'>{this.state.validacion}</span>
                                 </div>
                             </div>
-                           
+                            <div className='form-group'>
+                                <label>Comentarios*</label>
+                                <textarea rows={3} value={this.state.comentarios == '' ? 'La misma no cuenta con comentarios' : this.state.comentarios} readOnly={true} />
+                            </div>
+                            <div className='form-group'>
+                                <label>Criticas*</label>
+                                <textarea rows={3} value={this.state.criticas == '' ? 'La misma no cuenta con criticas' : this.state.criticas} readOnly={true} />
+                            </div>
                         </form>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary " data-dismiss="modal" onClick={handleCloseModal}>Cancelar</button>
-                        
+
                     </div>
                 </Modal>
 
@@ -153,26 +176,39 @@ class Peliculas extends Component {
         const { results, current_page, per_page, total, to, from } = this.state.peliculas;
 
 
-        const editPelicula = (pelicula) => {
+        const editPelicula = (pelicula, index) => {
             this.setState({ modal: true })
             //Modal.setAppElement('body');
             this.setState({
-                criticas: pelicula.etiquetas,
-                titulo :pelicula.titulo
-
+                etiquetas: pelicula.etiquetas,
+                titulo: pelicula.titulo,
+                // id:index +1
             })
+            // console.log(index)
+            const url = `/api/comentarios?id=${index + 1}`;
+            Axios.get(url).then(response => {
+                //this.setState({ comentarios: response.data.mensaje })
+                response.data.map((number) =>
+                    this.setState({ comentarios: number.mensaje })
+                );
+            }).catch(error => {
+                alert("Error " + error)
+            })
+            const urls = `/api/criticas?id=${index + 1}`;
+            Axios.get(urls).then(response => {
+                //this.setState({ comentarios: response.data.mensaje })
+                response.data.map((number) =>
+                    this.setState({ criticas: number.mensaje })
+                );
+
+            }).catch(error => {
+                alert("Error " + error)
+            })
+
 
         }
 
 
-        const handleOpenModalDelete = (cliente) => {
-            this.setState({ modalDelete: true })
-            //Modal.setAppElement('body');
-            this.setState({
-                formCodigo: cliente.fun_cod_1,
-            })
-
-        }
         const paginacion = (event) => {
             event.preventDefault();
             this.setState({ offset: offset + 1 })
@@ -183,7 +219,7 @@ class Peliculas extends Component {
             <>
                 <div className='container'>
                     <table className="table table-bordered order-table ">
-                        <thead>
+                        <thead className='thead-dark'>
                             <tr>
                                 <th>#</th>
                                 <th>Titulo</th>
@@ -195,12 +231,11 @@ class Peliculas extends Component {
                             {this.state.peliculas.results.map((pel, index) => {
 
                                 return <tr key={index}>
-                                    <td >{pel.index}</td>
+                                    <td >{index + 1}</td>
                                     <td >{pel.titulo}</td>
                                     <td >{pel.etiquetas}</td>
-
                                     <td>
-                                        <button className='btn btn-info' onClick={() => editPelicula(pel, this.setState({ edit: true }))}><i className="fa fa-pencil-square-o" aria-hidden="true"></i>Ver</button>
+                                        <button className='btn btn-info' onClick={() => editPelicula(pel, index, this.setState({ edit: true }))}><i className="fa fa-pencil-square-o" aria-hidden="true"></i>Ver</button>
                                     </td>
 
                                 </tr>
@@ -216,7 +251,7 @@ class Peliculas extends Component {
                                 activePage={this.state.peliculas.count}
                                 //itemsCountPerPage={this.state.peliculas.next}
                                 totalItemsCount={this.state.peliculas.count}
-                                onChange={(event) => paginacion(event)}
+                                onChange={() => paginacion()}
 
                             />
                         </ul>

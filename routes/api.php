@@ -19,3 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/peliculas','Peliculas@getPeliculas');
+Route::get('/comentarios','Peliculas@getComentarios');
+Route::get('/criticas','Peliculas@getCriticas');
+
+

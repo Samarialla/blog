@@ -10923,8 +10923,19 @@ a.text-dark:focus {
   top: 18px;
 }
 
+.nav {
+  font-size: 50px;
+  color: white;
+}
+
 .content {
   text-align: center;
+}
+
+textarea {
+  width: 100%;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .title {
@@ -10939,6 +10950,11 @@ a.text-dark:focus {
   letter-spacing: 0.1rem;
   text-decoration: none;
   text-transform: uppercase;
+}
+
+label {
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .m-b-md {

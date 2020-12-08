@@ -68040,6 +68040,29 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/components/Nav.js":
+/*!****************************************!*\
+  !*** ./resources/js/components/Nav.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Nav = function Nav() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
+    className: "navbar navbar-dark bg-dark nav"
+  }, "Lista de Peliculas");
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Nav);
+
+/***/ }),
+
 /***/ "./resources/js/components/Peliculas.js":
 /*!**********************************************!*\
   !*** ./resources/js/components/Peliculas.js ***!
@@ -68061,6 +68084,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_js_pagination__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_js_pagination__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var react_bootstrap4_modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap4-modal */ "./node_modules/react-bootstrap4-modal/lib/index.js");
 /* harmony import */ var react_bootstrap4_modal__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap4_modal__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _Nav__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Nav */ "./resources/js/components/Nav.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -68095,6 +68119,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Peliculas = /*#__PURE__*/function (_Component) {
   _inherits(Peliculas, _Component);
 
@@ -68116,7 +68141,10 @@ var Peliculas = /*#__PURE__*/function (_Component) {
       search: '',
       limit: '',
       offset: '',
-      criticas: ''
+      criticas: '',
+      id: '',
+      comentarios: '',
+      etiquetas: ''
     };
     return _this;
   } //carga  los al renderizar el componente
@@ -68166,9 +68194,8 @@ var Peliculas = /*#__PURE__*/function (_Component) {
                 axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(url).then(function (response) {
                   _this2.setState({
                     peliculas: response.data
-                  });
+                  }); //console.log(this.state.peliculas)
 
-                  console.log(_this2.state.peliculas);
                 })["catch"](function (error) {
                   alert("Error " + error);
                 });
@@ -68188,16 +68215,54 @@ var Peliculas = /*#__PURE__*/function (_Component) {
       return getdata;
     }()
   }, {
+    key: "getdataPeliculasCometarios",
+    value: function () {
+      var _getdataPeliculasCometarios = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var _this3 = this;
+
+        var formData, url;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                formData = new FormData();
+                url = "/api/comentarios?id=".concat(this.state.id);
+                axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(url).then(function (response) {
+                  //this.setState({ comentarios: response.data.mensaje })
+                  response.data.map(function (number) {
+                    return _this3.setState({
+                      comentarios: number.mensaje
+                    });
+                  });
+                })["catch"](function (error) {
+                  alert("Error " + error);
+                });
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function getdataPeliculasCometarios() {
+        return _getdataPeliculasCometarios.apply(this, arguments);
+      }
+
+      return getdataPeliculasCometarios;
+    }()
+  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var peliculas = this.state.peliculas;
       var modal = this.state.modal;
       var modalDelete = this.state.modalDelete; // para realizar la busqueda
 
       var onchange = function onchange(e) {
-        _this3.setState({
+        _this4.setState({
           search: e.target.value
         });
       }; // abre el modal
@@ -68206,7 +68271,7 @@ var Peliculas = /*#__PURE__*/function (_Component) {
       var handleOpenModal = function handleOpenModal(event) {
         event.preventDefault();
 
-        _this3.setState({
+        _this4.setState({
           modal: true
         });
       }; //cierra el modal
@@ -68215,33 +68280,27 @@ var Peliculas = /*#__PURE__*/function (_Component) {
       var handleCloseModal = function handleCloseModal(event) {
         event.preventDefault(); // se limpia para state para evitar error al cerrar o abrir el modal
 
-        _this3.setState({
+        _this4.setState({
           modal: false,
-          formCodigo: '',
-          formNombre: '',
-          formApellido: '',
-          formTelefono: '',
-          formCedula: '',
-          formDireccion: '',
           validacion: '',
           edit: false,
-          modalDelete: false
+          modalDelete: false,
+          id: ''
         });
       };
 
       var handleChangeLimit = function handleChangeLimit(event) {
-        _this3.setState({
+        _this4.setState({
           limit: event.target.value
-        });
+        }); //console.log(this.state.limit)
 
-        console.log(_this3.state.limit);
 
-        _this3.getdata();
+        _this4.getdata();
       };
       /******fin de crear*********/
 
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Nav__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "row"
@@ -68251,7 +68310,7 @@ var Peliculas = /*#__PURE__*/function (_Component) {
         name: "prov_descr",
         className: "form-control ",
         value: this.state.limit,
-        onClick: handleChangeLimit
+        onChange: handleChangeLimit
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
         value: "10"
       }, "10"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
@@ -68267,7 +68326,7 @@ var Peliculas = /*#__PURE__*/function (_Component) {
         className: "modal-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
         className: "container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Titulo *")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Titulo * ", this.state.id)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         value: this.state.titulo
@@ -68278,11 +68337,24 @@ var Peliculas = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Etiqueta*")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         className: "form-control",
-        value: this.state.criticas,
+        value: this.state.etiquetas,
+        readOnly: true,
         required: true
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "validacion"
-      }, this.state.validacion))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, this.state.validacion))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Comentarios*"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+        rows: 3,
+        value: this.state.comentarios == '' ? 'La misma no cuenta con comentarios' : this.state.comentarios,
+        readOnly: true
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Criticas*"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+        rows: 3,
+        value: this.state.criticas == '' ? 'La misma no cuenta con criticas' : this.state.criticas,
+        readOnly: true
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "modal-footer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         type: "button",
@@ -68294,7 +68366,7 @@ var Peliculas = /*#__PURE__*/function (_Component) {
   }, {
     key: "renderList",
     value: function renderList() {
-      var _this4 = this;
+      var _this5 = this;
 
       var _this$state$peliculas = this.state.peliculas,
           results = _this$state$peliculas.results,
@@ -68304,33 +68376,47 @@ var Peliculas = /*#__PURE__*/function (_Component) {
           to = _this$state$peliculas.to,
           from = _this$state$peliculas.from;
 
-      var editPelicula = function editPelicula(pelicula) {
-        _this4.setState({
+      var editPelicula = function editPelicula(pelicula, index) {
+        _this5.setState({
           modal: true
         }); //Modal.setAppElement('body');
 
 
-        _this4.setState({
-          criticas: pelicula.etiquetas,
-          titulo: pelicula.titulo
+        _this5.setState({
+          etiquetas: pelicula.etiquetas,
+          titulo: pelicula.titulo // id:index +1
+
+        }); // console.log(index)
+
+
+        var url = "/api/comentarios?id=".concat(index + 1);
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(url).then(function (response) {
+          //this.setState({ comentarios: response.data.mensaje })
+          response.data.map(function (number) {
+            return _this5.setState({
+              comentarios: number.mensaje
+            });
+          });
+        })["catch"](function (error) {
+          alert("Error " + error);
         });
-      };
-
-      var handleOpenModalDelete = function handleOpenModalDelete(cliente) {
-        _this4.setState({
-          modalDelete: true
-        }); //Modal.setAppElement('body');
-
-
-        _this4.setState({
-          formCodigo: cliente.fun_cod_1
+        var urls = "/api/criticas?id=".concat(index + 1);
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(urls).then(function (response) {
+          //this.setState({ comentarios: response.data.mensaje })
+          response.data.map(function (number) {
+            return _this5.setState({
+              criticas: number.mensaje
+            });
+          });
+        })["catch"](function (error) {
+          alert("Error " + error);
         });
       };
 
       var paginacion = function paginacion(event) {
         event.preventDefault();
 
-        _this4.setState({
+        _this5.setState({
           offset: offset + 1
         });
       };
@@ -68339,15 +68425,17 @@ var Peliculas = /*#__PURE__*/function (_Component) {
         className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
         className: "table table-bordered order-table "
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "#"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Titulo"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Etiqueta"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Accion"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", {
+        className: "thead-dark"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "#"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Titulo"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Etiqueta"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Accion"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", {
         id: "bodytable"
       }, this.state.peliculas.results.map(function (pel, index) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
           key: index
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, pel.index), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, pel.titulo), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, pel.etiquetas), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, pel.titulo), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, pel.etiquetas), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
           className: "btn btn-info",
           onClick: function onClick() {
-            return editPelicula(pel, _this4.setState({
+            return editPelicula(pel, index, _this5.setState({
               edit: true
             }));
           }
@@ -68365,8 +68453,8 @@ var Peliculas = /*#__PURE__*/function (_Component) {
         activePage: this.state.peliculas.count //itemsCountPerPage={this.state.peliculas.next}
         ,
         totalItemsCount: this.state.peliculas.count,
-        onChange: function onChange(event) {
-          return paginacion(event);
+        onChange: function onChange() {
+          return paginacion();
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "totales_grid"
